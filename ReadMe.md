@@ -6,7 +6,9 @@ Parser and Emitter CLI tools for libyaml
 # Try it Now with Docker:
 
 ```
-curl -s https://raw.githubusercontent.com/yaml/libyaml-parser/master/test/example-2.27-invoice.yaml | docker run -iv $PWD:/docker yamlio/libyaml-parser-emitter libyaml
+curl -s https://raw.githubusercontent.com/yaml/libyaml-parser-emitter/master/test/example-2.27-invoice.yaml | \
+        docker run -iv $PWD:/docker yamlio/libyaml-parser-emitter libyaml-parser | \
+        docker run -iv $PWD:/docker yamlio/libyaml-parser-emitter libyaml-emitter
 ```
 
 # Synopsis
@@ -64,5 +66,6 @@ make build
 ## Docker Image Build
 
 ```
-DOCKER_USER=yamlio make docker
+export DOCKER_USER=$USER   # Optional
+make docker
 ```

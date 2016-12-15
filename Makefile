@@ -2,7 +2,7 @@ LIBYAML_DIR ?= libyaml
 LIBYAML_REPO ?= https://github.com/yaml/libyaml
 LIBYAML_BRANCH ?= master
 DOCKER_NAME ?= libyaml-parser-emitter
-DOCKER_USER ?= $(USER)
+DOCKER_USER ?= yamlio
 DOCKER_TAG ?= latest
 DOCKER_IMAGE ?= $(DOCKER_USER)/$(DOCKER_NAME):$(DOCKER_TAG)
 
@@ -63,7 +63,7 @@ push: docker
 	docker push $(DOCKER_IMAGE)
 
 shell: docker
-	docker run -it --entrypoint=/bin/sh $(DOCKER_IMAGE)
+	docker run -it -v $$PWD:/docker --entrypoint=/bin/sh $(DOCKER_IMAGE)
 
 clean:
 	rm -fr libyaml libyaml-parser libyaml-emitter

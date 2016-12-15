@@ -20,11 +20,14 @@ COPY \
         /libyaml-parser-emitter/
 
 RUN \
-(   cd /libyaml-parser-emitter/  \
- && export LD_LIBRARY_PATH=$PWD/libyaml/src/.libs \
- && make clean build \
+( \
+    cd /libyaml-parser-emitter/  \
+    && export LD_LIBRARY_PATH=$PWD/libyaml/src/.libs \
+    && make clean build \
 )
 
-ENV LD_LIBRARY_PATH=/libyaml-parser-emitter/libyaml/src/.libs
+ENV \
+    LD_LIBRARY_PATH=/libyaml-parser-emitter/libyaml/src/.libs \
+    PATH="/libyaml-parser-emitter/:${PATH}"
 
-WORKDIR /docker
+WORKDIR /docker/

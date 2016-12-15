@@ -26,12 +26,15 @@ libyaml-%: $(LIBYAML_DIR)/tests/.libs/run-%
 
 $(LIBYAML_DIR)/tests/.libs/%: $(LIBYAML_DIR)/tests/%.c $(LIBYAML_DIR)/Makefile
 	make -C $(LIBYAML_DIR)
-	(cd $(LIBYAML_DIR) && git checkout $(<:$(LIBYAML_DIR)/%=%))
+	(cd $(LIBYAML_DIR) && git checkout tests/run-parser.c tests/run-emitter.c)
 
 $(LIBYAML_DIR)/tests/run-%: libyaml-% $(LIBYAML_DIR)
-	# cp $< $@
-	cp libyaml-parser.c $(LIBYAML_DIR)/tests/run-parser.c
-	cp libyaml-emitter.c $(LIBYAML_DIR)/tests/run-emitter.c
+	cp $< $@
+.SECONDARY: \
+	$(LIBYAML_DIR)/tests/run-parser.c \
+	$(LIBYAML_DIR)/tests/run-emitter.c \
+	$(LIBYAML_DIR)/tests/.libs/run-parser \
+	$(LIBYAML_DIR)/tests/.libs/run-emitter
 
 $(LIBYAML_DIR)/Makefile: $(LIBYAML_DIR)
 	( cd $< && ./bootstrap && ./configure )
@@ -39,7 +42,8 @@ $(LIBYAML_DIR)/Makefile: $(LIBYAML_DIR)
 
 libyaml:
 	git clone $(LIBYAML_REPO) $@
-	rm libyaml/tests/run-parser.c libyaml/tests/run-emitter.c
+	sleep 1
+	touch *.c
 
 .PHONY: test
 test: build

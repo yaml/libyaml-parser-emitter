@@ -19,14 +19,21 @@ export HELP
 help:
 	@echo "$$HELP"
 
-build: libyaml-parser libyaml-emitter
+build: touch libyaml-parser libyaml-emitter
+
+touch:
+ifneq ($(LIBYAML_DIR),libyaml)
+	touch *.c
+endif
 
 libyaml-%: $(LIBYAML_DIR)/tests/.libs/run-%
 	cp $< $@
 
 $(LIBYAML_DIR)/tests/.libs/%: $(LIBYAML_DIR)/tests/%.c $(LIBYAML_DIR)/Makefile
 	make -C $(LIBYAML_DIR)
+ifneq ($(LIBYAML_DIR),libyaml)
 	(cd $(LIBYAML_DIR) && git checkout tests/run-parser.c tests/run-emitter.c)
+endif
 
 $(LIBYAML_DIR)/tests/run-%: libyaml-% $(LIBYAML_DIR)
 	cp $< $@
@@ -40,7 +47,7 @@ $(LIBYAML_DIR)/Makefile: $(LIBYAML_DIR)
 	( cd $< && ./bootstrap && ./configure )
 	touch $@
 
-libyaml:
+$(LIBYAML_DIR):
 	git clone $(LIBYAML_REPO) $@
 	sleep 1
 	touch *.c

@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
         (yaml_char_t *)get_anchor('&', line, anchor),
         (yaml_char_t *)get_tag(line, tag),
         0,
-        0
+        YAML_BLOCK_MAPPING_STYLE
       );
     }
     else if (strncmp(line, "-MAP", 4) == 0) {
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
         &event,
         (yaml_char_t *)get_anchor('&', line, anchor),
         (yaml_char_t *)get_tag(line, tag),
-        1,
+        0,
         YAML_BLOCK_SEQUENCE_STYLE
       );
     }
@@ -97,15 +97,16 @@ int main(int argc, char *argv[]) {
       int style;
 
       get_value(line, value, &style);
+      implicit = (get_tag(line, tag) == NULL);
 
       ok = yaml_scalar_event_initialize(
         &event,
         (yaml_char_t *)get_anchor('&', line, anchor),
-        (yaml_char_t *)get_tag(line, tag),
+        tag,
         (yaml_char_t *)value,
         -1,
-        1,
-        1,
+        implicit,
+        implicit,
         style
       );
     }

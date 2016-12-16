@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
       ok = yaml_scalar_event_initialize(
         &event,
         (yaml_char_t *)get_anchor('&', line, anchor),
-        tag,
+        (yaml_char_t *)get_tag(line, tag),
         (yaml_char_t *)value,
         -1,
         implicit,
